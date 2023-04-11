@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Menu>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    
+    @foreach (var item in Model)
+    {
+        var getUrl = "https://localhost:7139/api/sanphamapi/" + item.IdMenu;
+        <a class="dropdown-item" style="cursor:pointer" onclick="getSanPhamFromMenu('@getUrl')">@item.TenMenu</a>
+    }
+
+</div>
+
+
+<script>
+    function getSanPhamFromMenu(getUrl) {
+        var str = '';
+        $.ajax({
+            type: 'GET',
+            url: getUrl,
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (key, val) {
+                    str += `<p> ${val.tenSanPham} </p>`
+                });
+                $('#displayProducts').html(str);
+            },
+            Error: function (xhr) {
+                alert(xhr.responseText)
+            }
+        });
+    }
+
+</script>
